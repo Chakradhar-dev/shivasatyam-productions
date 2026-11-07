@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Film, Calendar, Globe, Sparkles, ChevronRight, Play } from 'lucide-react';
-import { moviesList, featuredMovie } from '../data/siteData';
+import { Film, ChevronRight } from 'lucide-react';
+import { useSiteData } from '../context/SiteDataContext';
 
 export default function MoviesPage({ setActivePage }) {
+  const { moviesList, featuredMovie } = useSiteData();
   const [filter, setFilter] = useState('all');
 
   const handleNav = (id) => {
@@ -12,7 +13,7 @@ export default function MoviesPage({ setActivePage }) {
 
   const filteredMovies = filter === 'all'
     ? moviesList
-    : moviesList.filter((m) => m.category.toLowerCase().includes(filter));
+    : moviesList.filter((m) => m.category?.toLowerCase().includes(filter));
 
   return (
     <div className="pt-28 pb-24 space-y-16">
@@ -180,7 +181,7 @@ export default function MoviesPage({ setActivePage }) {
                   </button>
                 ) : (
                   <div className="w-full py-2.5 rounded-lg bg-white/5 border border-white/10 text-center text-xs uppercase tracking-wider text-gray-400">
-                    Pre-Production Announcement Coming Soon
+                    {movie.status || 'Pre-Production Announcement Coming Soon'}
                   </div>
                 )}
               </div>

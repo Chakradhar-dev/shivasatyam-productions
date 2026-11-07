@@ -6,17 +6,23 @@ import MoviesPage from './pages/MoviesPage';
 import AntaryamiPage from './pages/AntaryamiPage';
 import CompanyPage from './pages/CompanyPage';
 import ContactPage from './pages/ContactPage';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import { SiteDataProvider } from './context/SiteDataContext';
 
-export default function App() {
+function AppContent() {
   const getInitialPage = () => {
     const hash = window.location.hash.replace('#', '').toLowerCase();
-    if (['home', 'movies', 'antaryami', 'company', 'contact'].includes(hash)) {
+    if (['home', 'movies', 'antaryami', 'company', 'contact', 'admin'].includes(hash)) {
       return hash;
     }
     return 'home';
   };
 
   const [activePage, setActivePage] = useState(getInitialPage);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
+    return sessionStorage.getItem('ssp_admin_auth') === 'true';
+  });
 
   // Sync hash with active page
   useEffect(() => {
@@ -27,13 +33,24 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (['home', 'movies', 'antaryami', 'company', 'contact'].includes(hash)) {
+      if (['home', 'movies', 'antaryami', 'company', 'contact', 'admin'].includes(hash)) {
         setActivePage(hash);
       }
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
+  const handleAdminLoginSuccess = () => {
+    setIsAdminLoggedIn(true);
+    sessionStorage.setItem('ssp_admin_auth', 'true');
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminLoggedIn(false);
+    sessionStorage.removeItem('ssp_admin_auth');
+    setActivePage('home');
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-dark-950 text-gray-100 font-sans selection:bg-gold-500 selection:text-black">
@@ -47,10 +64,33 @@ export default function App() {
         {activePage === 'antaryami' && <AntaryamiPage setActivePage={setActivePage} />}
         {activePage === 'company' && <CompanyPage setActivePage={setActivePage} />}
         {activePage === 'contact' && <ContactPage setActivePage={setActivePage} />}
+        
+        {/* Admin Section */}
+        {activePage === 'admin' && (
+          isAdminLoggedIn ? (
+            <AdminDashboard
+              onLogout={handleAdminLogout}
+              onPreviewSite={() => setActivePage('home')}
+            />
+          ) : (
+            <AdminLogin
+              onLoginSuccess={handleAdminLoginSuccess}
+              onBackToSite={() => setActivePage('home')}
+            />
+          )
+        )}
       </main>
 
       {/* Bottom Footer */}
       <Footer setActivePage={setActivePage} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <SiteDataProvider>
+      <AppContent />
+    </SiteDataProvider>
   );
 }

@@ -1,8 +1,10 @@
 import React from 'react';
-import { Mail, MapPin, ChevronRight, Heart } from 'lucide-react';
-import { siteConfig } from '../data/siteData';
+import { MapPin, ChevronRight, Settings } from 'lucide-react';
+import { useSiteData } from '../context/SiteDataContext';
 
 export default function Footer({ setActivePage }) {
+  const { siteConfig } = useSiteData();
+
   const handleNav = (id) => {
     setActivePage(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -26,7 +28,7 @@ export default function Footer({ setActivePage }) {
               />
               <div>
                 <span className="font-serif tracking-widest text-lg font-bold text-white block">
-                  SHIVA SATYAM
+                  {siteConfig.shortName || 'SHIVA SATYAM'}
                 </span>
                 <span className="text-[11px] tracking-[0.3em] text-gold-400 uppercase block font-sans">
                   PRODUCTIONS
@@ -34,11 +36,11 @@ export default function Footer({ setActivePage }) {
               </div>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed">
-              Pioneering high-caliber, emotionally charged cinema that transcends regional boundaries and captivates audiences across India and beyond.
+              {siteConfig.tagline || 'Pioneering high-caliber, emotionally charged cinema that transcends regional boundaries and captivates audiences across India and beyond.'}
             </p>
             <div className="flex items-center space-x-3 pt-2">
               <a
-                href={siteConfig.socials.facebook}
+                href={siteConfig.socials?.facebook}
                 target="_blank"
                 rel="noreferrer"
                 className="w-9 h-9 rounded-full bg-white/5 hover:bg-gold-500 hover:text-black flex items-center justify-center text-gray-300 transition-colors"
@@ -49,7 +51,7 @@ export default function Footer({ setActivePage }) {
                 </svg>
               </a>
               <a
-                href={siteConfig.socials.instagram}
+                href={siteConfig.socials?.instagram}
                 target="_blank"
                 rel="noreferrer"
                 className="w-9 h-9 rounded-full bg-white/5 hover:bg-gold-500 hover:text-black flex items-center justify-center text-gray-300 transition-colors"
@@ -60,7 +62,7 @@ export default function Footer({ setActivePage }) {
                 </svg>
               </a>
               <a
-                href={siteConfig.socials.youtube}
+                href={siteConfig.socials?.youtube}
                 target="_blank"
                 rel="noreferrer"
                 className="w-9 h-9 rounded-full bg-white/5 hover:bg-gold-500 hover:text-black flex items-center justify-center text-gray-300 transition-colors"
@@ -110,10 +112,10 @@ export default function Footer({ setActivePage }) {
                   Business & Partnerships
                 </div>
                 <a
-                  href={`mailto:${siteConfig.contacts.business}`}
+                  href={`mailto:${siteConfig.contacts?.business}`}
                   className="hover:text-white transition-colors block text-gray-300 truncate"
                 >
-                  {siteConfig.contacts.business}
+                  {siteConfig.contacts?.business}
                 </a>
               </li>
               <li>
@@ -121,10 +123,10 @@ export default function Footer({ setActivePage }) {
                   Creative & Talent
                 </div>
                 <a
-                  href={`mailto:${siteConfig.contacts.creative}`}
+                  href={`mailto:${siteConfig.contacts?.creative}`}
                   className="hover:text-white transition-colors block text-gray-300 truncate"
                 >
-                  {siteConfig.contacts.creative}
+                  {siteConfig.contacts?.creative}
                 </a>
               </li>
               <li>
@@ -132,10 +134,10 @@ export default function Footer({ setActivePage }) {
                   Anti-Piracy & Copyright
                 </div>
                 <a
-                  href={`mailto:${siteConfig.contacts.copyright}`}
+                  href={`mailto:${siteConfig.contacts?.copyright}`}
                   className="hover:text-white transition-colors block text-gray-300 truncate"
                 >
-                  {siteConfig.contacts.copyright}
+                  {siteConfig.contacts?.copyright}
                 </a>
               </li>
             </ul>
@@ -150,11 +152,11 @@ export default function Footer({ setActivePage }) {
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-gold-400 mt-1 shrink-0" />
                 <address className="not-italic leading-relaxed text-xs sm:text-sm">
-                  <span className="font-semibold text-white block">{siteConfig.address.line1}</span>
-                  {siteConfig.address.line2}<br />
-                  {siteConfig.address.line3}<br />
-                  {siteConfig.address.cityStateZip}<br />
-                  {siteConfig.address.country}
+                  <span className="font-semibold text-white block">{siteConfig.address?.line1}</span>
+                  {siteConfig.address?.line2}<br />
+                  {siteConfig.address?.line3}<br />
+                  {siteConfig.address?.cityStateZip}<br />
+                  {siteConfig.address?.country}
                 </address>
               </div>
               <button
@@ -168,16 +170,23 @@ export default function Footer({ setActivePage }) {
 
         </div>
 
-        {/* Bottom Bar matching exact copyright */}
+        {/* Bottom Bar matching exact copyright + Admin Button */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
           <p className="tracking-wide">
             © 2025 All Rights Reserved by SSP.
           </p>
-          <div className="flex items-center gap-6 text-gray-400">
+          <div className="flex items-center gap-5 text-gray-400">
             <button onClick={() => handleNav('home')} className="hover:text-white">Home</button>
             <button onClick={() => handleNav('movies')} className="hover:text-white">Movies</button>
             <button onClick={() => handleNav('company')} className="hover:text-white">The Company</button>
             <button onClick={() => handleNav('contact')} className="hover:text-white">Connect</button>
+            <button
+              onClick={() => handleNav('admin')}
+              className="inline-flex items-center gap-1 text-gold-400/80 hover:text-gold-300 border-l border-white/10 pl-5"
+            >
+              <Settings className="w-3 h-3" />
+              <span>Admin CMS</span>
+            </button>
           </div>
         </div>
       </div>
