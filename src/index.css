@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #070709;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(229, 169, 60, 0.04) 0%, transparent 60%),
+    linear-gradient(to bottom, #070709, #0b0c10);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Custom Film Grain effect */
+.film-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Golden Gradient Text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #fff2cc 0%, #e5a93c 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-subtle {
+  background: linear-gradient(135deg, #ffffff 0%, #f4e8c1 60%, #e5a93c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070709;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #252833;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e5a93c;
+}
